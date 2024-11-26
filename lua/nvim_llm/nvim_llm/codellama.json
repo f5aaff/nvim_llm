@@ -1,0 +1,4 @@
+{
+    "model": "codellama:latest",
+    "address": "http://localhost:8080/api/generate"
+}

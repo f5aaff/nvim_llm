@@ -1,0 +1,4 @@
+{
+    "model": "tinyllama:1.1b",
+    "address": "http://localhost:8080/api/generate"
+}
