@@ -31,6 +31,29 @@ func main() {
 }
 ```
 
-then, with the cursor on the comment, run ```NvimLlm```
+then, with the cursor on the comment, run ```LlamaComp```
 
 this will fire off a request via the rust tool in the repo, parse the response, and write it below the comment.
+
+
+# nvim_llm_tool
+
+this is a simple rust package, takes some command line args that get called by the plugin.
+```
+Usage: nvim_llm [OPTIONS]
+
+Options:
+  -c, --config <CONFIG>  [default: config.json]
+  -m, --msg <MSG>        [default: ]
+  -h, --help             Print help
+  -V, --version          Print version
+  ```
+
+the config looks like this:
+```json
+{
+    "model": "codellama:latest",
+    "address": "http://localhost:8080/api/generate",
+    "preamble": "Respond with only the code snippet for the requested task. Do not include package declarations, import statements, or any extra text that is not part of the core code. If explanations are necessary, write them as inline comments in the code itself. Do not wrap the code in backticks, markdown,code block, or any other formatting."
+}
+```
