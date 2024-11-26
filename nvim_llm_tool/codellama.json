@@ -1,4 +1,5 @@
 {
     "model": "codellama:latest",
-    "address": "http://localhost:8080/api/generate"
+    "address": "http://localhost:8080/api/generate",
+    "preamble": "Respond with only the code snippet for the requested task. Do not include package declarations, import statements, or any extra text that is not part of the core code. If explanations are necessary, write them as inline comments in the code itself. Do not wrap the code in backticks, markdown,code block, or any other formatting."
 }

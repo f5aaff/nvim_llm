@@ -3,8 +3,56 @@ local M = {}
 -- Default configuration
 M.config = {
     nvim_llm_bin = "~/.local/share/nvim/site/pack/packer/start/nvim_llm/lua/nvim_llm/nvim_llm/nvim_llm",
-    nvim_llm_conf = "~/.local/share/nvim/site/pack/packer/start/nvim_llm/lua/nvim_llm/nvim_llm/codellama.json"
+    nvim_llm_conf = "~/.local/share/nvim/site/pack/packer/start/nvim_llm/lua/nvim_llm/nvim_llm/codellama.json",
+    ollama_serve_cmd = "OLLAMA_HOST=0.0.0.0:8080 OLLAMA_MODELS=/usr/share/ollama/.ollama/models ollama serve"
 }
+
+local uv = vim.loop
+local process_handle
+
+-- Function to start a process
+function M.start_process(command, args)
+    if process_handle then
+        print("A process is already running.")
+        return
+    end
+
+    -- Start the process
+    process_handle = uv.spawn(command, {
+        args = args,               -- Arguments for the command
+        stdio = { nil, nil, nil }, -- No standard I/O redirection
+    }, function(code, signal)
+        print("Process exited with code:", code, "and signal:", signal)
+        process_handle = nil -- Clear the handle on exit
+    end)
+
+    if not process_handle then
+        print("Failed to start process:", command)
+    else
+        print("Started process:", command)
+    end
+end
+
+-- Function to stop the running process
+function M.stop_process()
+    if not process_handle then
+        print("No process is running.")
+        return
+    end
+
+    -- Send SIGTERM (or other signal if necessary)
+    process_handle:kill("sigterm")
+    print("Stopped the process.")
+    process_handle = nil
+end
+
+function M.OllamaServe()
+    M.start_process(M.config.ollama_serve_cmd, nil)
+end
+
+function M.OllamaKill()
+    M.stop_process()
+end
 
 local function load_lua_config(path)
     local config, err = loadfile(path)
@@ -66,7 +114,9 @@ function M.gen_code()
     -- iterate over the response, creating a new line everytime a newline is encountered.
     local lines = {}
     for line in new_content:gmatch("([^\n]*)\n?") do
-        table.insert(lines, line)
+        if not string.find(line, '`') then
+            table.insert(lines, line)
+        end
     end
     -- Get the current cursor position and total lines in the buffer
     local cursor_pos = vim.fn.line('.')

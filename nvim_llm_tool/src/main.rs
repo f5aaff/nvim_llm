@@ -19,6 +19,7 @@ struct Args {
 struct Config {
     model: String,
     address: String,
+    preamble: String
 }
 
 #[derive(Serialize)]
@@ -35,9 +36,12 @@ struct ResponseBody {
 
 async fn send_request(config: &Config, message: &str) -> Result<String, anyhow::Error> {
     // Prepare the initial request body
+    let preamble = config.preamble.to_owned();
+    let rambled_message = preamble+" REQUEST: "+message;
+
     let reqbody = RequestBody {
         model: &config.model,
-        prompt: message,
+        prompt: &rambled_message,
     };
 
     let body = serde_json::to_string(&reqbody)?;
