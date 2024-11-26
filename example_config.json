@@ -1,4 +1,4 @@
 {
-    "nvim_llm_bin":"~/.local/share/nvim/site/pack/packer/start/nvim_llm/lua/nvim_llm/nvim_llm/nvim_llm",
-    "nvim_llm_conf":"~/.local/share/nvim/site/pack/packer/start/nvim_llm/lua/nvim_llm/nvim_llm/codellama.json"
+    "nvim_llm_bin":"~/.local/share/nvim/site/pack/packer/start/nvim_llm/nvim_llm_tool/nvim_llm",
+    "nvim_llm_conf":"~/.local/share/nvim/site/pack/packer/start/nvim_llm/nvim_llm_tool/codellama.json"
 }
