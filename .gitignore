@@ -1,2 +1,3 @@
 */config.json
 lua/nvim_llm/config.json
+nvim_llm_tool/target/
